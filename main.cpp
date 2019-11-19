@@ -9,7 +9,7 @@ using namespace std;
 #include "sequenceSearch.cpp"
 
 int main(int argc, char **argv) {
-	
+
 	//verif_parametres(argc, argv);
 	
 	cout << "Le programme commence" << endl;
@@ -19,6 +19,7 @@ int main(int argc, char **argv) {
 	searchSequence(proteinFile);
 	
 	cout << "Fermeture du fichier" << endl;
+
 	proteinFile.close();
 	
 	

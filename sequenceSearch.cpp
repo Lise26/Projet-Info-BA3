@@ -63,6 +63,7 @@ int searchSequence(ifstream& proteinFile){
 			counter++;
 		}
 		
+
 		bool proteinFound = false;
 		int xxx=0;
 		while(!sequenceFile.eof() and proteinFound == false and xxx<20){
@@ -76,4 +77,3 @@ int searchSequence(ifstream& proteinFile){
 	}
 	return 0;
 }
-
