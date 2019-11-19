@@ -7,7 +7,7 @@
 using namespace std;
 
 
-bool checkSequence(ifstream& sequenceFile, vector<string> proteinTable){
+bool checkSequence(ifstream& sequenceFile, string proteinTable){
 	
 	char letter;
 	int indiceLetter = 0;
@@ -22,7 +22,8 @@ bool checkSequence(ifstream& sequenceFile, vector<string> proteinTable){
 		indiceLetter++;
 		cout << indiceLetter << dicoNumbers[int(letter)] << "/" << proteinTable[indiceLetter] << "/" << int(letter) << endl;
 		
-		if(dicoNumbers[int(letter)] != proteinTable[indiceLetter]){
+		if(dicoNumbers[int(letter)][0] != proteinTable[indiceLetter]){
+			cout << "equal = false" << endl;
 			equal=false;
 	    }
 	}
@@ -46,24 +47,20 @@ int searchSequence(ifstream& proteinFile){
 			cout << i << " " << int(letter) << dicoNumbers[letter] << endl;
 		}*/
 		
-		//string proteinTable[2000];  									//donner une taille infinie?????????
-		
-		vector<string> proteinTable;
+		string proteinTable = " ";  							
 		
 		string protLetter;
 		int counter=0;
 		string protLine;
 		getline(proteinFile,protLine);  								//la premiere ligne est le titre de la protéine
-		cout << "ligne1: " << protLine << endl;
-		//on lit la sequence protéine à partir de deuxieme ligne
+		cout << "ligne1: " << protLine << endl;							//on lit la sequence protéine à partir de deuxieme ligne
 		
 		while(proteinFile >> protLetter and !proteinFile.eof()){  		//1:lit lettre dans fichier et met variable dans protLetter, 2:arrete de mettre dans le tableau quand on arrive à la fin du fichier 
-			proteinTable.push_back(protLetter);
-			cout << proteinTable[counter];
 			counter++;
+			proteinTable.append(protLetter);
+			cout << proteinTable[counter];								//PROBLEME : n'affiche pas tout
 		}
 		
-
 		bool proteinFound = false;
 		int xxx=0;
 		while(!sequenceFile.eof() and proteinFound == false and xxx<20){
@@ -74,6 +71,7 @@ int searchSequence(ifstream& proteinFile){
 		}
 		
 		sequenceFile.close();
+		cout << proteinFound << endl;
 	}
 	return 0;
 }
