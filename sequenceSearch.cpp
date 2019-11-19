@@ -7,7 +7,7 @@
 using namespace std;
 
 
-bool checkSequence(ifstream& sequenceFile, string proteinTable){
+bool checkSequence(ifstream& sequenceFile, vector<char> proteinTable){
 	
 	char letter;
 	int indiceLetter = 0;
@@ -19,8 +19,8 @@ bool checkSequence(ifstream& sequenceFile, string proteinTable){
 	sequenceFile.get(letter); 											//skip first blank char
 	
 	while(sequenceFile.get(letter) and int(letter)!=0 and equal == true){
+		cout << indiceLetter << dicoNumbers[int(letter)][0] << "/" << proteinTable[indiceLetter] << "/" << int(letter) << endl;
 		indiceLetter++;
-		cout << indiceLetter << dicoNumbers[int(letter)] << "/" << proteinTable[indiceLetter] << "/" << int(letter) << endl;
 		
 		if(dicoNumbers[int(letter)][0] != proteinTable[indiceLetter]){
 			cout << "equal = false" << endl;
@@ -32,6 +32,7 @@ bool checkSequence(ifstream& sequenceFile, string proteinTable){
 	return equal;
 }
 
+
 int searchSequence(ifstream& proteinFile){
 	
 	ifstream sequenceFile("./uniprot_sprot.fasta.psq");
@@ -39,26 +40,18 @@ int searchSequence(ifstream& proteinFile){
 	if(sequenceFile.is_open())
 	{
 		cout << "sequenceFileOpened" << endl;
-
-		/*char letter;
-		int i = 0;
-		while(sequenceFile.get(letter) and i<20){
-			i++;
-			cout << i << " " << int(letter) << dicoNumbers[letter] << endl;
-		}*/
 		
-		string proteinTable = " ";  							
-		
-		string protLetter;
+		vector<char> proteinTable;			
+		char protLetter;
 		int counter=0;
 		string protLine;
 		getline(proteinFile,protLine);  								//la premiere ligne est le titre de la protéine
 		cout << "ligne1: " << protLine << endl;							//on lit la sequence protéine à partir de deuxieme ligne
 		
 		while(proteinFile >> protLetter and !proteinFile.eof()){  		//1:lit lettre dans fichier et met variable dans protLetter, 2:arrete de mettre dans le tableau quand on arrive à la fin du fichier 
-			counter++;
-			proteinTable.append(protLetter);
-			cout << proteinTable[counter];								//PROBLEME : n'affiche pas tout
+			proteinTable.push_back(protLetter);
+			cout << proteinTable[counter];	
+			counter++;					
 		}
 		
 		bool proteinFound = false;
