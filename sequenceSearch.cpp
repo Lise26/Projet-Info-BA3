@@ -2,8 +2,9 @@
 #include <iomanip>
 #include <fstream>
 #include <map>
-#include <string>
+#include <string.h>
 #include <vector>
+#include <stdio.h>
 using namespace std;
 
 
@@ -13,22 +14,26 @@ bool checkSequence(ifstream& sequenceFile, vector<char> proteinTable){
 	int indiceLetter = 0;
 	bool equal = true;
 	//map<string,int> dicoLetters = {{" ",0},{"A",1},{"B",2},{"C",3},{"D",4},{"E",5},{"F",6},{"G",7},{"H",8},{"I",9},{"J",27},{"K",10},{"L",11},{"M",12},{"N",13},{"O",26},{"P",14},{"Q",15},{"R",16},{"S",17},{"T",18},{"U",24},{"V",19},{"W",20},{"X",21},{"Y",22},{"Z",23},{"*",25}};
+	//map<int,char> dicoNumbers = {{0,' '},{1,'A'},{2,'B'},{3,'C'},{4,'D'},{5,'E'},{6,'F'},{7,'G'},{8,'H'},{9,'I'},{27,'J'},{10,'K'},{11,'L'},{12,'M'},{13,'N'},{26,'O'},{14,'P'},{15,'Q'},{16,'R'},{17,'S'},{18,'T'},{24,'U'},{19,'V'},{20,'W'},{21,'X'},{22,'Y'},{23,'Z'},{25,'*'}};
 	map<int,string> dicoNumbers = {{0," "},{1,"A"},{2,"B"},{3,"C"},{4,"D"},{5,"E"},{6,"F"},{7,"G"},{8,"H"},{9,"I"},{27,"J"},{10,"K"},{11,"L"},{12,"M"},{13,"N"},{26,"O"},{14,"P"},{15,"Q"},{16,"R"},{17,"S"},{18,"T"},{24,"U"},{19,"V"},{20,"W"},{21,"X"},{22,"Y"},{23,"Z"},{25,"*"}};
 	
-	cout << "checkSequence" << endl;
 	sequenceFile.get(letter); 											//skip first blank char
 	
+
 	while(sequenceFile.get(letter) and int(letter)!=0 and equal == true){
-		cout << indiceLetter << dicoNumbers[int(letter)][0] << "/" << proteinTable[indiceLetter] << "/" << int(letter) << endl;
-		indiceLetter++;
+		cout << indiceLetter << " " << dicoNumbers[int(letter)][0] << "/" << proteinTable[indiceLetter] << "/" << int(letter) << endl;
 		
 		if(dicoNumbers[int(letter)][0] != proteinTable[indiceLetter]){
 			cout << "equal = false" << endl;
 			equal=false;
-	    }
+	    } else {
+			cout << "true" << endl;
+		}
+	    indiceLetter++; 
 	}
 	
-	while(sequenceFile.get(letter) and int(letter)!=0);
+	//while(sequenceFile.get(letter) and int(letter)!=0);
+	//cout << equal << endl;
 	return equal;
 }
 
@@ -55,16 +60,20 @@ int searchSequence(ifstream& proteinFile){
 		}
 		
 		bool proteinFound = false;
+		vector<int> tableau_offset;
 		int xxx=0;
-		while(!sequenceFile.eof() and proteinFound == false and xxx<20){
+		while(!sequenceFile.eof() and proteinFound == false){
+			offset = tableau_offset[xxx];
+			sequenceFile_coupe = fct(offset);
+			//cout << "chk sequence " << xxx << endl;
+			//cout << "proteinTable[2]=" << proteinTable[2] << endl;
+			proteinFound = checkSequence(sequenceFile_coupe, proteinTable);
+			if(proteinFound) {
+				offsetFINAL = offset;
+			}
 			xxx++;
-			cout << "chk sequence " << xxx << endl;
-			cout << "proteinTable[2]=" << proteinTable[2] << endl;
-			proteinFound = checkSequence(sequenceFile, proteinTable);
 		}
-		
 		sequenceFile.close();
-		cout << proteinFound << endl;
 	}
-	return 0;
+	return offsetFINAL;
 }
