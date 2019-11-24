@@ -7,7 +7,7 @@ inline void littleBigEndian (int &x) {
 		x = ((x >> 24) & 0xffL) | ((x >> 8) & 0xff00L) | ((x << 8) & 0xff0000L) | ((x << 24) & 0xff000000L);
 		}
 
-int index_reader(vector<int> *tableau_offset){
+int index_reader(vector<int> *tableau_offset, vector<int> *header_offset){
 	int version, type, len, lenT, nbSeq, lenMax = 0;
 	int64_t residu = 0;
 	ifstream f ("uniprot_sprot.fasta.pin");
@@ -45,22 +45,30 @@ int index_reader(vector<int> *tableau_offset){
 		
 	f.read ((char *)&lenMax, sizeof(lenMax));
 	littleBigEndian(lenMax);
+	cout << "nbSeq=" << nbSeq << endl;
 		
 	int headerOff[nbSeq+1];
+	//(*header_offset).push_back(1);
+	cout << "avant header" << endl;
 	for(int i=0; i < (nbSeq+1); i++){
 		f.read ((char *)&headerOff[i], sizeof(int));
+		cout << headerOff[i] << endl;
 		littleBigEndian(headerOff[i]);
-		//cout << headerOff[i] << endl;
+		cout << headerOff[i] << "avant tableauH i=" << i << endl;
+		(*header_offset).push_back(headerOff[i]);
+		cout << "after push" << endl;
 	}
 		
 	int seqOff[nbSeq+1];
 	for(int i=0; i < (nbSeq+1); i++){
 		f.read ((char *)&seqOff[i], sizeof(int));
 		littleBigEndian(seqOff[i]);
-		cout << "avant tableau" << endl;
+		cout << "avant tableau i=" << i << endl;
 		(*tableau_offset).push_back(seqOff[i]);
+		cout << "apres tableau i=" << i << endl;
 	}
-		
+	
+	cout << "index_reader 05" << endl;
 	int ambOff[nbSeq+1];
 	for(int i=0; i < (nbSeq+1); i++){
 		f.read ((char *)&ambOff[i], sizeof(int));
@@ -69,7 +77,7 @@ int index_reader(vector<int> *tableau_offset){
 		
 	//cout << "Version : " << version << " Type : " << type << " Len : " << len << " Titre : " << s << " Tlen : " << lenT << " Tstamp : " << p << endl;
 	//cout << "Nb Sequence : " << nbSeq << " Résidu : " << residu << " Len max : " << lenMax << endl;
-		
+	cout << "fin index_reader" << endl;
 	return 0;
 }
 
