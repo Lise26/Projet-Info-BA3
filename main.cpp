@@ -1,27 +1,31 @@
+#include <string>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
 #include <map>
-#include <string>
+#include <string.h>
+#include <vector>
+#include <stdio.h>
 using namespace std;
 
-#include "projet.cpp"
+//#include "projet.cpp"
 #include "sequenceSearch.cpp"
+#include "index_reader.cpp"
+#include "test_header.cpp"
 
 int main(int argc, char **argv) {
 
 	//verif_parametres(argc, argv);
 	
-	cout << "Le programme commence" << endl;
+	vector<int> tableau_offset(0);
+	vector<int> header_offset(0);
+	index_reader(&tableau_offset, &header_offset);
+	
 	ifstream proteinFile("./P00533.fasta");
+	//ifstream proteinFile("./Q6GZX4.fasta");
+	header_name(searchSequence(proteinFile, &tableau_offset), header_offset);
 	
-	cout << "Appel à la fonction searchSequence" << endl;
-	searchSequence(proteinFile);
-	
-	cout << "Fermeture du fichier" << endl;
-
 	proteinFile.close();
-	
 	
 	return(0);
 }
