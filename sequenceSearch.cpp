@@ -57,7 +57,7 @@ int searchSequence(ifstream& proteinFile, vector<int> *tableau_offset){
 			proteinFound = checkSequence(sequenceFile.seekg(offset), proteinTable);
 			xxx++;
 		}
-		indiceFINAL = xxx;
+		indiceFINAL = xxx-1;
 		sequenceFile.close();
 	}
 	cout << indiceFINAL << endl;
