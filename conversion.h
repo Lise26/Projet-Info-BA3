@@ -6,7 +6,6 @@
 using namespace std;
 
 class conversion {
-	stringstream ss;
 	
 	public :
 		string decToHex(int decimal);
