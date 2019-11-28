@@ -77,7 +77,7 @@ int index_reader(vector<int> *tableau_offset, vector<int> *header_offset){
 }
 
 
-//int* getseqOff() {	
+//int* const& getseqOff() {	
 	//return seqOff[nbSeq+1];
 //}
 
