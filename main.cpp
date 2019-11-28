@@ -11,28 +11,65 @@ using namespace std;
 //#include "projet.cpp"
 #include "sequenceSearch.cpp"
 #include "index_reader.cpp"
-#include "headerSearch.cpp"
-#include "header_search.cpp"
+#include "test_header.cpp"
 
 int main(int argc, char **argv) {
-	//verif_parametres(argc, argv);
-	vector<int> tableau_offset(0);
-	
-	vector<int> header_offset(0);
-	int indice =80000;
-	header_offset = index_reader(0);  //sequence address in a table built from index File
-	tableau_offset = index_reader(1);
 
-	ifstream proteinFile("P00533.fasta");
+	//verif_parametres(argc, argv);
 	
-	//int indice = searchSequence(proteinFile, tableau_offset);  //renvoie adresse de la sequence correcte (ou 0 si aucune sesuence ne correspond à la protéine
-	cout << "après searchSequence" << endl;
-	header_name(indice, header_offset);//Il faut encore couper le nom et le mettre dans un nouveau fichier
+	vector<int> tableau_offset(0);
+	vector<int> header_offset(0);
+	vector<char> titre;
+	vector<char> date;
+	vector<char> name;
+	int version, nbSeq, lmax, size, sizet, sized =0;
+	int64_t residu = 0;
+	index_reader(&tableau_offset, &header_offset, &version, &nbSeq, &lmax, &residu, &titre, &date, &sizet, &sized);
+	//for (int i=0; i < sizeof(date); i++){
+	//cout << date[i];}
 	
-	//string title = searchHeader(indice, header_offset);
-	//cout << "nom de la protéine: " << title << endl;
+	ifstream proteinFile("/home/student/Bureau/P00533.fasta");
+	//ifstream proteinFile("/home/student/Bureau/Q9Y6V0.fasta");
+	//ifstream proteinFile("/home/student/Bureau/P07327.fasta");
+	header_name(searchSequence(proteinFile, &tableau_offset), header_offset, &name, &size);
+	for (int i=0; i < size; i++){
+	cout << name[i];}
+	cout << endl;
+	
+	
+	//cout << size >> result.txt;
 	
 	proteinFile.close();
 	
+	string p(sizet,0);
+	for(int i = 0; i < sizet; i++){
+		p[i] = titre[i];
+	}
+	
+	string d(sized,0);
+	for(int i = 0; i < sized; i++){
+		d[i] = date[i];
+	}
+	
+	string n(size,0);
+	for(int i = 0; i < size; i++){
+		n[i] = name[i];
+	}
+	
+	//cout << d[sizeof(d)-10] << endl;
+	//cout << d << "oui" << endl;
+	ofstream result("/home/student/Bureau/result.txt");
+	if(result){//Avec les classes je vais arranger ça en plus beau, j'ai juste la flemme de le refaire 2x
+		result << "Database title : ";
+		result << p << endl;
+		result << "Database time : ";
+		result << d << endl;
+		result << "Database size : ";
+		result << residu << " residues in " << nbSeq << " sequences"<< endl;
+		result << "Longeset db sequence : ";
+		result << lmax << endl;
+		result << "\n\n" << endl;
+		result << "The matching protein is : \n" << n << endl;
+	}	
 	return(0);
 }
