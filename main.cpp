@@ -1,3 +1,6 @@
+//to compile this program, a makefile has been made
+//to run this program: ./project ./"protein searched" ./uniprot_sprot.fasta
+
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -18,7 +21,7 @@ int main(int argc, char **argv) {
 	sequenceSearch s;
 	headerSearch head;
 	
-	verif.verifParameters(argc, argv);			//vérification of the number of parameters given in input
+	verif.verifParameters(argc, argv);			//verification of the number of parameters given in input
 	
 	string nameSequence = argv[2];
 	nameSequence.append(".psq");				//construction of the name of the sequence file in the database
@@ -29,23 +32,23 @@ int main(int argc, char **argv) {
 	string nameHeader = argv[2];
 	nameHeader.append(".phr");				//construction of the name of the header file in the database
 	
-	ifstream proteinFile(argv[1]);									
-	ifstream sequenceFile(nameSequence);								
-	ifstream indexFile(nameIndex);                                   	
-	ifstream headerFile(nameHeader);
+	ifstream proteinFile(argv[1]);				//opening proteinFile				
+	ifstream sequenceFile(nameSequence);		//opening sequenceFile				
+	ifstream indexFile(nameIndex);              //opening indexFile
+	ifstream headerFile(nameHeader);			//opening headerFile
 	
 	vector<int> tableauOffset(0);				//varaiables to keep information from the indexFile
 	vector<int> headerOffset(0);
-	vector<char> titre;
+	vector<char> title;
 	vector<char> date;
 	vector<char> name;
 	int version, nbSeq, lmax, size, sizet, sized =0;
 	int64_t residu = 0;
 	
-	ind.indexReader(indexFile, &tableauOffset, &headerOffset, &version, &nbSeq, &lmax, &residu, &titre, &date, &sizet, &sized);		
+	ind.indexReader(indexFile, &tableauOffset, &headerOffset, &version, &nbSeq, &lmax, &residu, &title, &date, &sizet, &sized);		
 	
 	if(sequenceFile.is_open()) {
-		//search for a match between the query protein and the sequence file of the database and return the result of the research into a file : result.txt
+		//search for a match between the query protein and the sequence file of the database
 		head.header_name(headerFile, s.sequenceMatch(proteinFile, sequenceFile, &tableauOffset), headerOffset, &name, &size); 
 	}
 	
@@ -54,7 +57,7 @@ int main(int argc, char **argv) {
 	
 	string p(sizet,0);
 	for(int i = 0; i < sizet; i++){
-		p[i] = titre[i];
+		p[i] = title[i];
 	}
 	
 	string d(sized,0);
@@ -67,8 +70,8 @@ int main(int argc, char **argv) {
 		n[i] = name[i];
 	}
 
-	ofstream result("./result.txt");
-	if(result){															//Avec les classes je vais arranger ça en plus beau, j'ai juste la flemme de le refaire 2x
+	ofstream result("./result.txt");		//return the result of the research into a file : result.txt
+	if(result){															
 		result << "Database title : ";
 		result << p << endl;
 		result << "Database time : ";
@@ -83,3 +86,4 @@ int main(int argc, char **argv) {
 	
 	return(0);
 }
+
