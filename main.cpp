@@ -21,20 +21,20 @@ int main(int argc, char **argv) {
 	verif.verifParameters(argc, argv);			//vérification of the number of parameters given in input
 	
 	string nameSequence = argv[2];
-	nameSequence.append(".psq");
+	nameSequence.append(".psq");				//construction of the name of the sequence file in the database
 	
 	string nameIndex = argv[2];
-	nameIndex.append(".pin");
+	nameIndex.append(".pin");				//construction of the name of the index file in the database
 	
 	string nameHeader = argv[2];
-	nameHeader.append(".phr");
+	nameHeader.append(".phr");				//construction of the name of the header file in the database
 	
 	ifstream proteinFile(argv[1]);									
 	ifstream sequenceFile(nameSequence);								
 	ifstream indexFile(nameIndex);                                   	
 	ifstream headerFile(nameHeader);
 	
-	vector<int> tableauOffset(0);
+	vector<int> tableauOffset(0);				//varaiables to keep information from the indexFile
 	vector<int> headerOffset(0);
 	vector<char> titre;
 	vector<char> date;
@@ -45,6 +45,7 @@ int main(int argc, char **argv) {
 	ind.indexReader(indexFile, &tableauOffset, &headerOffset, &version, &nbSeq, &lmax, &residu, &titre, &date, &sizet, &sized);		
 	
 	if(sequenceFile.is_open()) {
+		//search for a match between the query protein and the sequence file of the database and return the result of the research into a file : result.txt
 		head.header_name(headerFile, s.sequenceMatch(proteinFile, sequenceFile, &tableauOffset), headerOffset, &name, &size); 
 	}
 	
