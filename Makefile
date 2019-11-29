@@ -1,5 +1,5 @@
-projet: parameters.o indexSearch.o sequenceSearch.o check.o conversion.o headerSearch.o main.o
-	g++ -o projet parameters.o indexSearch.o sequenceSearch.o check.o conversion.o headerSearch.o main.o
+project: parameters.o indexSearch.o sequenceSearch.o check.o conversion.o headerSearch.o main.o
+	g++ -o project parameters.o indexSearch.o sequenceSearch.o check.o conversion.o headerSearch.o main.o
 	
 parameters.o: parameters.cpp
 	g++ -o parameters.o -c parameters.cpp -Wall -O
