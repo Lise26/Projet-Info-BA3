@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
 		n[i] = name[i];
 	}
 
-	ofstream result("/home/student/Bureau/result.txt");
+	ofstream result("./result.txt");
 	if(result){															//Avec les classes je vais arranger ça en plus beau, j'ai juste la flemme de le refaire 2x
 		result << "Database title : ";
 		result << p << endl;
